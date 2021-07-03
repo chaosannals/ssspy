@@ -1,0 +1,38 @@
+﻿<Page x:Class="SSSpy.Pages.SettingPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:SSSpy.Pages"
+      mc:Ignorable="d" 
+      d:DesignHeight="360" d:DesignWidth="500"
+      Title="SettingPage">
+
+    <Grid>
+        <Label Grid.Row="0" Grid.Column="0" Margin="5">SQL Server 服务器：</Label>
+        <TextBox Grid.Row="0" Grid.Column="1" Margin="5" Text="{Binding Path=Model.SsHost,Mode=TwoWay}"/>
+
+        <Label Grid.Row="1" Grid.Column="0" Margin="5">SQL Server 用户名：</Label>
+        <TextBox Grid.Row="1" Grid.Column="1" Margin="5" Text="{Binding Path=Model.SsUser,Mode=TwoWay}"/>
+
+        <Label Grid.Row="2" Grid.Column="0" Margin="5">SQL Server 密码：</Label>
+        <TextBox Grid.Row="2" Grid.Column="1" Margin="5" Text="{Binding Path=Model.SsPass,Mode=TwoWay}"/>
+
+        <WrapPanel Grid.Row="3" Grid.Column="1" HorizontalAlignment="Right">
+            <Button Margin="5" Padding="5" Click="onClickTestButton">测试连接</Button>
+            <Button Margin="5" Padding="5" Click="onClickSaveButton">保存</Button>
+        </WrapPanel>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+    </Grid>
+</Page>
