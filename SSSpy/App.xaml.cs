@@ -12,5 +12,16 @@ namespace SSSpy
     /// </summary>
     public partial class App : Application
     {
+        private void onStartup(object sender, StartupEventArgs e)
+        {
+            AppDomain.CurrentDomain.UnhandledException += (s, en) =>
+            {
+                "捕获了漏掉的异常".Log();
+                en.ExceptionObject.ToString().Log();
+            };
+            AppDomain.CurrentDomain.ProcessExit += (s, en) => {
+                LogExtends.Over();
+            };
+        }
     }
 }

@@ -18,21 +18,37 @@
         <Label Grid.Row="2" Grid.Column="0" Margin="5">SQL Server 密码：</Label>
         <TextBox Grid.Row="2" Grid.Column="1" Margin="5" Text="{Binding Path=Model.SsPass,Mode=TwoWay}"/>
 
-        <WrapPanel Grid.Row="3" Grid.Column="1" HorizontalAlignment="Right">
+        <Label Grid.Row="3" Grid.Column="0" Margin="5">SQL Server 数据库：</Label>
+        <ComboBox Grid.Row="3" Grid.Column="1" Margin="5" SelectedItem="{Binding Path=Model.SsDatabase,Mode=TwoWay}" ItemsSource="{Binding Path=Model.SsDatabases,Mode=TwoWay}" DisplayMemberPath="name" SelectedValuePath="name"/>
+
+        <ListView Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" ItemsSource="{Binding Path=Model.SsTables,Mode=TwoWay}">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="表名" Width="200" DisplayMemberBinding="{Binding Path=name}"/>
+                    <GridViewColumn Header="创建时间" Width="200" DisplayMemberBinding="{Binding Path=crdate,StringFormat='yyyy-MM-dd HH:mm:ss'}"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        
+        <WrapPanel Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Right">
             <Button Margin="5" Padding="5" Click="onClickTestButton">测试连接</Button>
+            <Button Margin="5" Padding="5" Click="onClickShowButton">获取数据库列表</Button>
+            <Button Margin="5" Padding="5" Click="onClickShowTablesButton">获取表列表</Button>
             <Button Margin="5" Padding="5" Click="onClickSaveButton">保存</Button>
         </WrapPanel>
+        
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="200"/>
             <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
     </Grid>
 </Page>

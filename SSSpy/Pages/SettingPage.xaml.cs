@@ -12,6 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.ComponentModel;
+using SSSpy.Models;
 
 namespace SSSpy.Pages
 {
@@ -22,6 +23,9 @@ namespace SSSpy.Pages
         private string ssHost;
         private string ssUser;
         private string ssPass;
+        private DatabaseInfo ssDatabase;
+        private List<DatabaseInfo> ssDatabases = new List<DatabaseInfo>();
+        private List<TableInfo> ssTables = new List<TableInfo>();
 
         public string SsHost
         {
@@ -50,6 +54,36 @@ namespace SSSpy.Pages
             {
                 ssPass = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("SsPass"));
+            }
+        }
+
+        public DatabaseInfo SsDatabase
+        {
+            get { return ssDatabase; }
+            set
+            {
+                ssDatabase = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("SsDatabase"));
+            }
+        }
+
+        public List<DatabaseInfo> SsDatabases
+        {
+            get { return ssDatabases; }
+            set
+            {
+                ssDatabases = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("SsDatabases"));
+            }
+        }
+
+        public List<TableInfo> SsTables
+        {
+            get { return ssTables; }
+            set
+            {
+                ssTables = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("SsTables"));
             }
         }
     }
@@ -88,6 +122,46 @@ namespace SSSpy.Pages
                 {
                     session.EnsureConnection();
                     mw.Say("测试链接数据库成功");
+                }
+                catch (Exception ex)
+                {
+                    mw.Say(ex.Message);
+                }
+            }
+        }
+
+        private void onClickShowButton(object sender, RoutedEventArgs e)
+        {
+            MainWindow mw = Window.GetWindow(this) as MainWindow;
+            using (var session = new MsSQLSession(Model.SsHost, Model.SsUser, Model.SsPass))
+            {
+                try
+                {
+                    Model.SsDatabases = session.Search<DatabaseInfo>(
+                        "SELECT * FROM MASTER.DBO.SYSDATABASES ORDER BY [name]"
+                    );
+                    if (Model.SsDatabases.Count > 0)
+                    {
+                        Model.SsDatabase = Model.SsDatabases[0];
+                    }
+                }
+                catch (Exception ex)
+                {
+                    mw.Say(ex.Message);
+                }
+            }
+        }
+
+        private void onClickShowTablesButton(object sender, RoutedEventArgs e)
+        {
+            MainWindow mw = Window.GetWindow(this) as MainWindow;
+            using (var session = new MsSQLSession(Model.SsHost, Model.SsUser, Model.SsPass))
+            {
+                try
+                {
+                    Model.SsTables = session.Search<TableInfo>(
+                        string.Format("SELECT * FROM {0}.sys.SysObjects WHERE [xtype]='U' ORDER BY [name]", Model.SsDatabase.name)
+                    );
                 }
                 catch (Exception ex)
                 {
