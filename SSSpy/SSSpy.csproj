@@ -73,6 +73,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\DatabaseInfo.cs" />
+    <Compile Include="Models\MsTypeInfo.cs" />
     <Compile Include="Models\TableInfo.cs" />
     <Compile Include="MsSQLSession.cs" />
     <Compile Include="Pages\SettingPage.xaml.cs">

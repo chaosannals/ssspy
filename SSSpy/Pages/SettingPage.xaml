@@ -9,28 +9,32 @@
       Title="SettingPage">
 
     <Grid>
-        <Label Grid.Row="0" Grid.Column="0" Margin="5">SQL Server 服务器：</Label>
-        <TextBox Grid.Row="0" Grid.Column="1" Margin="5" Text="{Binding Path=Model.SsHost,Mode=TwoWay}"/>
+        <Label Grid.Row="0" Grid.Column="0" Margin="5">SQL Server 连接方式</Label>
+        <ComboBox SelectedItem="{Binding Path=Model.SsType,Mode=TwoWay}" ItemsSource="{Binding Path=Types,Mode=OneWay}" DisplayMemberPath="name" SelectedValuePath="id" Grid.Row="0" Grid.Column="1" Margin="5"/>
 
-        <Label Grid.Row="1" Grid.Column="0" Margin="5">SQL Server 用户名：</Label>
-        <TextBox Grid.Row="1" Grid.Column="1" Margin="5" Text="{Binding Path=Model.SsUser,Mode=TwoWay}"/>
+        <Label Grid.Row="1" Grid.Column="0" Margin="5">SQL Server 服务器：</Label>
+        <TextBox Grid.Row="1" Grid.Column="1" Margin="5" Text="{Binding Path=Model.SsHost,Mode=TwoWay}"/>
 
-        <Label Grid.Row="2" Grid.Column="0" Margin="5">SQL Server 密码：</Label>
-        <TextBox Grid.Row="2" Grid.Column="1" Margin="5" Text="{Binding Path=Model.SsPass,Mode=TwoWay}"/>
+        <Label Grid.Row="2" Grid.Column="0" Margin="5">SQL Server 用户名：</Label>
+        <TextBox Grid.Row="2" Grid.Column="1" Margin="5" Text="{Binding Path=Model.SsUser,Mode=TwoWay}"/>
 
-        <Label Grid.Row="3" Grid.Column="0" Margin="5">SQL Server 数据库：</Label>
-        <ComboBox Grid.Row="3" Grid.Column="1" Margin="5" SelectedItem="{Binding Path=Model.SsDatabase,Mode=TwoWay}" ItemsSource="{Binding Path=Model.SsDatabases,Mode=TwoWay}" DisplayMemberPath="name" SelectedValuePath="name"/>
+        <Label Grid.Row="3" Grid.Column="0" Margin="5">SQL Server 密码：</Label>
+        <TextBox Grid.Row="3" Grid.Column="1" Margin="5" Text="{Binding Path=Model.SsPass,Mode=TwoWay}"/>
 
-        <ListView Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" ItemsSource="{Binding Path=Model.SsTables,Mode=TwoWay}">
+        <Label Grid.Row="4" Grid.Column="0" Margin="5">SQL Server 数据库：</Label>
+        <ComboBox Grid.Row="4" Grid.Column="1" Margin="5" SelectedItem="{Binding Path=Model.SsDatabase,Mode=TwoWay}" ItemsSource="{Binding Path=Model.SsDatabases,Mode=TwoWay}" DisplayMemberPath="name" SelectedValuePath="name"/>
+
+        <ListView Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" ItemsSource="{Binding Path=Model.SsTables,Mode=TwoWay}">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="表名" Width="200" DisplayMemberBinding="{Binding Path=name}"/>
                     <GridViewColumn Header="创建时间" Width="200" DisplayMemberBinding="{Binding Path=crdate,StringFormat='yyyy-MM-dd HH:mm:ss'}"/>
+                    <GridViewColumn Header="行数" Width="200" DisplayMemberBinding="{Binding Path=rowCount}"/>
                 </GridView>
             </ListView.View>
         </ListView>
         
-        <WrapPanel Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Right">
+        <WrapPanel Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Right">
             <Button Margin="5" Padding="5" Click="onClickTestButton">测试连接</Button>
             <Button Margin="5" Padding="5" Click="onClickShowButton">获取数据库列表</Button>
             <Button Margin="5" Padding="5" Click="onClickShowTablesButton">获取表列表</Button>
@@ -38,6 +42,7 @@
         </WrapPanel>
         
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>

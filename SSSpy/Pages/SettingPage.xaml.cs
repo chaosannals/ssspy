@@ -11,7 +11,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 using System.ComponentModel;
+using System.Threading;
 using SSSpy.Models;
 
 namespace SSSpy.Pages
@@ -20,12 +22,23 @@ namespace SSSpy.Pages
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
+        private MsTypeInfo ssType;
         private string ssHost;
         private string ssUser;
         private string ssPass;
         private DatabaseInfo ssDatabase;
         private List<DatabaseInfo> ssDatabases = new List<DatabaseInfo>();
         private List<TableInfo> ssTables = new List<TableInfo>();
+
+        public MsTypeInfo SsType
+        {
+            get { return ssType; }
+            set
+            {
+                ssType = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("SsType"));
+            }
+        }
 
         public string SsHost
         {
@@ -93,12 +106,19 @@ namespace SSSpy.Pages
     /// </summary>
     public partial class SettingPage : Page
     {
+        public List<MsTypeInfo> Types { get; private set; }
         public SettingPageModel Model { get; private set; }
 
         public SettingPage()
         {
+            Types = new List<MsTypeInfo>
+            {
+                new MsTypeInfo { id = 1, name = "Windows 认证" },
+                new MsTypeInfo { id = 2, name = "SQL Server TCP" }
+            };
             Model = new SettingPageModel
             {
+                SsType = Types[0],
                 SsHost = "(local)",
                 SsUser = Environment.MachineName + "/" + Environment.UserName,
                 SsPass = "",
@@ -116,7 +136,7 @@ namespace SSSpy.Pages
         private void onClickTestButton(object sender, RoutedEventArgs e)
         {
             MainWindow mw = Window.GetWindow(this) as MainWindow;
-            using (var session = new MsSQLSession(Model.SsHost, Model.SsUser, Model.SsPass))
+            using (var session = NewSession())
             {
                 try
                 {
@@ -133,7 +153,7 @@ namespace SSSpy.Pages
         private void onClickShowButton(object sender, RoutedEventArgs e)
         {
             MainWindow mw = Window.GetWindow(this) as MainWindow;
-            using (var session = new MsSQLSession(Model.SsHost, Model.SsUser, Model.SsPass))
+            using (var session = NewSession())
             {
                 try
                 {
@@ -155,19 +175,41 @@ namespace SSSpy.Pages
         private void onClickShowTablesButton(object sender, RoutedEventArgs e)
         {
             MainWindow mw = Window.GetWindow(this) as MainWindow;
-            using (var session = new MsSQLSession(Model.SsHost, Model.SsUser, Model.SsPass))
+            new Thread(() =>
             {
-                try
+                using (var session = NewSession())
                 {
-                    Model.SsTables = session.Search<TableInfo>(
-                        string.Format("SELECT * FROM {0}.sys.SysObjects WHERE [xtype]='U' ORDER BY [name]", Model.SsDatabase.name)
-                    );
+                    try
+                    {
+                        mw.Model.Visibility = Visibility.Visible;
+                        var tables = session.Search<TableInfo>(
+                            string.Format("SELECT * FROM {0}.sys.SysObjects WHERE [xtype]='U' ORDER BY [name]", Model.SsDatabase.name)
+                        );
+                        foreach (var ti in tables)
+                        {
+                            ti.rowCount = session.Count(string.Format("SELECT COUNT(*) FROM {0}.dbo.{1}", Model.SsDatabase.name, ti.name));
+                        }
+                        Model.SsTables = tables;
+                    }
+                    catch (Exception ex)
+                    {
+                        mw.Say(ex.Message);
+                    }
+                    finally
+                    {
+                        mw.Model.Visibility = Visibility.Collapsed;
+                    }
                 }
-                catch (Exception ex)
-                {
-                    mw.Say(ex.Message);
-                }
+            }).Start();
+        }
+
+        public MsSQLSession NewSession()
+        {
+            if (Model.SsType.id == 1)
+            {
+                return new MsSQLSession(Model.SsHost, Model.SsUser, Model.SsPass);
             }
+            return new MsSQLSession(Model.SsHost, Model.SsUser, Model.SsPass, false);
         }
     }
 }

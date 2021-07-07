@@ -5,11 +5,9 @@ using System.Text;
 
 namespace SSSpy.Models
 {
-    public class TableInfo
+    public class MsTypeInfo
     {
+        public int id { get; set; }
         public string name { get; set; }
-        public DateTime crdate { get; set; }
-
-        public long rowCount { get; set; }
     }
 }

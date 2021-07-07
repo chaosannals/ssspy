@@ -9,5 +9,17 @@
     <Grid>
         <Frame x:Name="PageFrame" Source="Pages/SettingPage.xaml"/>
         <StackPanel x:Name="MessageStack" HorizontalAlignment="Center" VerticalAlignment="Top"></StackPanel>
+        <Grid Visibility="{Binding Path=Model.Visibility,Mode=TwoWay}" Background="White" Opacity="0.3">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+        </Grid>
     </Grid>
 </Window>

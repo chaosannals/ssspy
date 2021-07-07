@@ -13,17 +13,42 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Threading;
 using System.Windows.Threading;
+using System.ComponentModel;
 
 namespace SSSpy
 {
+    public class MainWindowModel : INotifyPropertyChanged
+    {
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private Visibility visibility;
+
+        public Visibility Visibility
+        {
+            get { return visibility; }
+            set
+            {
+                visibility = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Visibility"));
+            }
+        }
+    }
+
     /// <summary>
     /// MainWindow.xaml 的交互逻辑
     /// </summary>
     public partial class MainWindow : Window
     {
+        public MainWindowModel Model { get; private set; }
+
         public MainWindow()
         {
+            Model = new MainWindowModel
+            {
+                Visibility = Visibility.Collapsed
+            };
             InitializeComponent();
+            DataContext = this;
         }
 
         public void Switch(string name)

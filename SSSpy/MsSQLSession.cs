@@ -100,12 +100,15 @@ namespace SSSpy
                     T one = (T)type.Assembly.CreateInstance(type.FullName);
                     foreach (PropertyInfo p in properties)
                     {
-                        var v = reader[p.Name];
-                        p.SetValue(one, v, null);
+                        try
+                        {
+                            var v = reader[p.Name];
+                            p.SetValue(one, v, null);
+                        }
+                        catch (IndexOutOfRangeException){}
                     }
                     result.Add(one);
                 }
-                "结束".Log();
                 reader.Close();
                 return result;
             }
