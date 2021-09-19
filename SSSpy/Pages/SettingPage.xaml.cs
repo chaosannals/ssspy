@@ -15,6 +15,7 @@ using System.Windows.Threading;
 using System.ComponentModel;
 using System.Threading;
 using SSSpy.Models;
+using SSSpy.Models.Habits;
 
 namespace SSSpy.Pages
 {
@@ -89,16 +90,6 @@ namespace SSSpy.Pages
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("SsDatabases"));
             }
         }
-
-        public List<TableInfo> SsTables
-        {
-            get { return ssTables; }
-            set
-            {
-                ssTables = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("SsTables"));
-            }
-        }
     }
 
     /// <summary>
@@ -113,7 +104,7 @@ namespace SSSpy.Pages
         {
             Types = new List<MsTypeInfo>
             {
-                new MsTypeInfo { id = 1, name = "Windows 认证" },
+                new MsTypeInfo { id = 1, name = "Windows 身份认证" },
                 new MsTypeInfo { id = 2, name = "SQL Server TCP" }
             };
             Model = new SettingPageModel
@@ -127,12 +118,30 @@ namespace SSSpy.Pages
             DataContext = this;
         }
 
+        /// <summary>
+        /// 保存信息，并切到数据库页。
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void onClickSaveButton(object sender, RoutedEventArgs e)
         {
             MainWindow mw = Window.GetWindow(this) as MainWindow;
+            SQLServerAccount sa = new SQLServerAccount
+            {
+                Type = Model.SsType.id,
+                Host = Model.SsHost,
+                User = Model.SsUser,
+                Pass = Model.SsPass,
+            };
             mw.Say("保存成功");
+            mw.Switch("Database", sa);
         }
 
+        /// <summary>
+        /// 通过填写的数据库账号信息，尝试连接数据库。
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void onClickTestButton(object sender, RoutedEventArgs e)
         {
             MainWindow mw = Window.GetWindow(this) as MainWindow;
@@ -150,6 +159,11 @@ namespace SSSpy.Pages
             }
         }
 
+        /// <summary>
+        /// 获取数据库列表。
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void onClickShowButton(object sender, RoutedEventArgs e)
         {
             MainWindow mw = Window.GetWindow(this) as MainWindow;
@@ -158,7 +172,7 @@ namespace SSSpy.Pages
                 try
                 {
                     Model.SsDatabases = session.Search<DatabaseInfo>(
-                        "SELECT * FROM MASTER.DBO.SYSDATABASES ORDER BY [name]"
+                        "SELECT * FROM master.sys.sysdatabases ORDER BY [name]"
                     );
                     if (Model.SsDatabases.Count > 0)
                     {
@@ -172,37 +186,10 @@ namespace SSSpy.Pages
             }
         }
 
-        private void onClickShowTablesButton(object sender, RoutedEventArgs e)
-        {
-            MainWindow mw = Window.GetWindow(this) as MainWindow;
-            new Thread(() =>
-            {
-                using (var session = NewSession())
-                {
-                    try
-                    {
-                        mw.Model.Visibility = Visibility.Visible;
-                        var tables = session.Search<TableInfo>(
-                            string.Format("SELECT * FROM {0}.sys.SysObjects WHERE [xtype]='U' ORDER BY [name]", Model.SsDatabase.name)
-                        );
-                        foreach (var ti in tables)
-                        {
-                            ti.rowCount = session.Count(string.Format("SELECT COUNT(*) FROM {0}.dbo.{1}", Model.SsDatabase.name, ti.name));
-                        }
-                        Model.SsTables = tables;
-                    }
-                    catch (Exception ex)
-                    {
-                        mw.Say(ex.Message);
-                    }
-                    finally
-                    {
-                        mw.Model.Visibility = Visibility.Collapsed;
-                    }
-                }
-            }).Start();
-        }
-
+        /// <summary>
+        /// 得到一个数据库会话。
+        /// </summary>
+        /// <returns></returns>
         public MsSQLSession NewSession()
         {
             if (Model.SsType.id == 1)

@@ -14,6 +14,9 @@ using System.Windows.Shapes;
 using System.Threading;
 using System.Windows.Threading;
 using System.ComponentModel;
+using Darkit.Logging;
+using SSSpy.Pages;
+using SSSpy.Models.Habits;
 
 namespace SSSpy
 {
@@ -51,12 +54,20 @@ namespace SSSpy
             DataContext = this;
         }
 
-        public void Switch(string name)
+        /// <summary>
+        /// 切换页。
+        /// </summary>
+        /// <param name="name"></param>
+        public void Switch(string name, object data=null)
         {
-            string path = string.Format("Pages/{0}Page.xaml", name);
-            PageFrame.Navigate(path);
+            string path = string.Format("pack://application:,,,/Pages/{0}Page.xaml", name);
+            PageFrame.Navigate(new Uri(path), data);
         }
-
+        
+        /// <summary>
+        /// 消息提示
+        /// </summary>
+        /// <param name="text"></param>
         public void Say(string text)
         {
             new Thread(() =>
@@ -80,6 +91,16 @@ namespace SSSpy
                     MessageStack.Children.Remove(b);
                 });
             }).Start();
+        }
+
+        private void OnLoadCompleted(object sender, NavigationEventArgs e)
+        {
+            Log.Info("load compl {0} {1}", e.Content?.GetType().FullName, e.ExtraData?.GetType().FullName);
+            if (e.Content is DatabasePage && e.ExtraData is SQLServerAccount)
+            {
+                DatabasePage page = e.Content as DatabasePage;
+                page.Account = e.ExtraData as SQLServerAccount;
+            }
         }
     }
 }

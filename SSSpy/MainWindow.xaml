@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="SSSpy" Height="450" Width="800">
     <Grid>
-        <Frame x:Name="PageFrame" Source="Pages/SettingPage.xaml"/>
+        <Frame x:Name="PageFrame" Source="Pages/IndexPage.xaml" NavigationUIVisibility="Visible" LoadCompleted="OnLoadCompleted"/>
         <StackPanel x:Name="MessageStack" HorizontalAlignment="Center" VerticalAlignment="Top"></StackPanel>
         <Grid Visibility="{Binding Path=Model.Visibility,Mode=TwoWay}" Background="White" Opacity="0.3">
             <Grid.RowDefinitions>

@@ -1,0 +1,45 @@
+﻿<Page x:Class="SSSpy.Pages.DatabasePage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:SSSpy.Pages"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="DatabasePage">
+
+    <Grid>
+        <Label Grid.Row="4" Grid.Column="0" Margin="5">SQL Server 数据库：</Label>
+        <ComboBox Grid.Row="4" Grid.Column="1" Margin="5" SelectedItem="{Binding Path=Model.Database,Mode=TwoWay}" ItemsSource="{Binding Path=Model.Databases,Mode=TwoWay}" DisplayMemberPath="name" SelectedValuePath="name"/>
+        
+        <ListView Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" ItemsSource="{Binding Path=Model.Tables,Mode=TwoWay}">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="表名" Width="200" DisplayMemberBinding="{Binding Path=name}"/>
+                    <GridViewColumn Header="创建时间" Width="200" DisplayMemberBinding="{Binding Path=crdate,StringFormat='yyyy-MM-dd HH:mm:ss'}"/>
+                    <GridViewColumn Header="行数" Width="200" DisplayMemberBinding="{Binding Path=rowCount}"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        
+        <WrapPanel Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Right">
+            <Button Margin="5" Padding="5" Click="onClickShowButton">获取数据库列表</Button>
+            <Button Margin="5" Padding="5" Click="onClickShowTablesButton">获取表列表</Button>
+        </WrapPanel>
+        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+    </Grid>
+</Page>

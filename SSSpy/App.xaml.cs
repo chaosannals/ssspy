@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Data;
 using System.Linq;
 using System.Windows;
+using Darkit.Logging;
 
 namespace SSSpy
 {
@@ -14,13 +15,13 @@ namespace SSSpy
     {
         private void onStartup(object sender, StartupEventArgs e)
         {
+            Log.Init();
             AppDomain.CurrentDomain.UnhandledException += (s, en) =>
             {
-                "捕获了漏掉的异常".Log();
-                en.ExceptionObject.ToString().Log();
+                Log.Error("捕获了漏掉的异常：{0}", en.ExceptionObject.ToString());
             };
             AppDomain.CurrentDomain.ProcessExit += (s, en) => {
-                LogExtends.Over();
+                Log.Quit();
             };
         }
     }

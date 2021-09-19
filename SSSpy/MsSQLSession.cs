@@ -33,7 +33,7 @@ namespace SSSpy
 
         public MsSQLSession(string server, string user, string password, bool isSspi = true)
         {
-            string dns = string.Format("Server={0}; User Id={1};Password={2}", server, user, password);
+            string dns = string.Format("Server={0}; Database=; User Id={1};Password={2};", server, user, password);
             if (isSspi) dns += ";Trusted_Connection=SSPI";
             ConnectString = dns;
             Connection = null;
@@ -301,7 +301,7 @@ namespace SSSpy
         /// <param name="one"></param>
         /// <param name="table"></param>
         /// <returns></returns>
-        public int Edit<T>(T one, string tag = "ID", string table = null)
+        public int Edit<T>(T one, string tag = "id", string table = null)
         {
             Type type = typeof(T);
             PropertyInfo[] properties = type.GetProperties();
@@ -333,7 +333,8 @@ namespace SSSpy
                 throw new InvalidSQLException("标记数据不可空");
             }
 
-            builder.Append(string.Format(" WHERE [{0}]={1}", tag, tagValue));
+            vs.Add(new SqlParameter(tag, tagValue));
+            builder.Append(string.Format(" WHERE [{0}]=@{0}", tag));
             // builder.ToString().Log();
             return Execute(builder.ToString(), vs.ToArray());
         }
