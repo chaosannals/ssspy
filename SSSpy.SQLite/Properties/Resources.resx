@@ -121,10 +121,10 @@
     <value />
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="SSSpy_Analytics" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\SSSpy.Analytics.db;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="SQLite_Interop_x64" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SQLite.Interop.x64.dll;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="SSSpy_Habits" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\SSSpy.Habits.db;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="SQLite_Interop_x86" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SQLite.Interop.x86.dll;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>
