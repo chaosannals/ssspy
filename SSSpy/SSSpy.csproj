@@ -63,7 +63,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="SQLiteSession.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -131,12 +130,6 @@
     </None>
     <None Include="Resources\SSSpy.Analytics.db" />
     <None Include="Resources\SSSpy.Habits.db" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\SQLite.Interop.x64.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\SQLite.Interop.x86.dll" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Icons\DatabaseInfo.png" />

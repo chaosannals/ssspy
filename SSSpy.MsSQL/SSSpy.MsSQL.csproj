@@ -41,8 +41,18 @@
   <ItemGroup>
     <Compile Include="Exceptions\InvalidSQLException.cs" />
     <Compile Include="MsSQLConfig.cs" />
+    <Compile Include="MsSQLNetworkLibrary.cs" />
     <Compile Include="MsSQLSession.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SSSpy.Core\SSSpy.Core.csproj">
+      <Project>{33f8cc97-590c-4f14-a213-42a1bf43c5af}</Project>
+      <Name>SSSpy.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Models\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

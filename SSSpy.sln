@@ -15,6 +15,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SSSpy.MsSQL", "SSSpy.MsSQL\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SSSpy.SQLite", "SSSpy.SQLite\SSSpy.SQLite.csproj", "{25D2E650-4D5A-406E-A8D5-9C160B7699BF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SSSpy.Habit", "SSSpy.Habit\SSSpy.Habit.csproj", "{898783D4-5F9A-48B3-8A42-C83AAA9E1D1B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SSSpy.UI", "SSSpy.UI\SSSpy.UI.csproj", "{B213A093-C5EC-41FA-8D95-D38C8F20971F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -43,6 +47,14 @@ Global
 		{25D2E650-4D5A-406E-A8D5-9C160B7699BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{25D2E650-4D5A-406E-A8D5-9C160B7699BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{25D2E650-4D5A-406E-A8D5-9C160B7699BF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{898783D4-5F9A-48B3-8A42-C83AAA9E1D1B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{898783D4-5F9A-48B3-8A42-C83AAA9E1D1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{898783D4-5F9A-48B3-8A42-C83AAA9E1D1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{898783D4-5F9A-48B3-8A42-C83AAA9E1D1B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B213A093-C5EC-41FA-8D95-D38C8F20971F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B213A093-C5EC-41FA-8D95-D38C8F20971F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B213A093-C5EC-41FA-8D95-D38C8F20971F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B213A093-C5EC-41FA-8D95-D38C8F20971F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
